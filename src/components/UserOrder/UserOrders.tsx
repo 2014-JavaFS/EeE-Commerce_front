@@ -8,9 +8,7 @@ interface Props {
 
 const UserOrders: React.FC<Props> = ({ userId }: { userId: number }) => {
   // this will hold the retrieved User data
-
-  const [userOrders, setUserOrders] = useState<Order[]>([]);
-
+  const [userOrders, setUserOrders] = useState<Order | null>(null);
 
   // runs as soon as this Route is visited
   useEffect(() => {
@@ -19,9 +17,7 @@ const UserOrders: React.FC<Props> = ({ userId }: { userId: number }) => {
       try {
         console.log("user id in UserOrders.tsx: ", userId);
         const response = await axios.get(
-
-          `http://localhost:8080/orders/users/${userId}`
-
+          `http://localhost:8080/users/${userId}`
         );
 
         // GET reseponse.data has same structure as UserType, so can assign directly to userOrders via setUserOrders()
@@ -44,14 +40,11 @@ const UserOrders: React.FC<Props> = ({ userId }: { userId: number }) => {
     <>
       {/* display the retrieved user data as the content of this component*/}
       <h2>Profile</h2>
-       <ul>
-         <li>Orders:</li>
-         {userOrders.map((order) => (
-           <li key={order.orderId}>
-             Order ID: {order.orderId}, Date: {order.date}
-           </li>
-         ))}
-       </ul>
+      <ul>
+        <li>Orders:</li>
+        <li>{userOrders?.orderId}</li>
+        <li>{userOrders?.date}</li>
+      </ul>
     </>
   );
 };
